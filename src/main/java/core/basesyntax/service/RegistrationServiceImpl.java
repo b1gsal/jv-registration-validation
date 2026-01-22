@@ -15,14 +15,14 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (user == null) {
             throw new UserValidationException("User can not be null");
         }
-        if (storageDao.get(user.getLogin()) != null) {
-            throw new UserValidationException("There is already User with such login");
-        }
         if (user.getLogin() == null) {
             throw new UserValidationException("Users login can not be null");
         }
         if (user.getLogin().length() < MINIMAL_LENGTH_FOR_LOGIN_PASSWORD) {
             throw new UserValidationException("Login length must be at least 6 characters");
+        }
+        if (storageDao.get(user.getLogin()) != null) {
+            throw new UserValidationException("There is already User with such login");
         }
         if (user.getPassword() == null) {
             throw new UserValidationException("Users password can not be null");
@@ -33,6 +33,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (user.getAge() == null || user.getAge() < MINIMAL_AGE) {
             throw new UserValidationException("Users who under 18 years old, can not register");
         }
+
         storageDao.add(user);
         return user;
     }
