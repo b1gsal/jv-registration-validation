@@ -62,7 +62,7 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    void register_incorrectLengthLogin_notOK() {
+    void register_incorrectLengthLogin_notOk() {
         User userAlice = new User();
         userAlice.setAge(18);
         userAlice.setLogin("Ali");
@@ -130,7 +130,8 @@ class RegistrationServiceImplTest {
         userAlex.setAge(22);
         userAlex.setLogin("Alex161");
         userAlex.setPassword("qazwsx123");
-        assertEquals(userAlex, registrationService.register(userAlex));
+        registrationService.register(userAlex);
+        assertEquals(userAlex, storageDao.get(userAlex.getLogin()));
     }
 
     @Test
@@ -139,7 +140,7 @@ class RegistrationServiceImplTest {
         userDenys.setAge(44);
         userDenys.setLogin("denchik777");
         userDenys.setPassword("qwe123");
-        registrationService.register(userDenys);
+        Storage.people.add(userDenys);
         assertThrows(UserValidationException.class, () -> {
             registrationService.register(userDenys);
         });
@@ -161,8 +162,76 @@ class RegistrationServiceImplTest {
         userEva.setAge(23);
         userEva.setLogin("_22_2_--");
         userEva.setPassword("!fk((dkasm");
-        assertEquals(userDenys, registrationService.register(userDenys));
-        assertEquals(userVovka, registrationService.register(userVovka));
-        assertEquals(userEva, registrationService.register(userEva));
+        registrationService.register(userDenys);
+        assertEquals(userDenys, storageDao.get(userDenys.getLogin()));
+        registrationService.register(userVovka);
+        assertEquals(userVovka, storageDao.get(userVovka.getLogin()));
+        registrationService.register(userEva);
+        assertEquals(userEva, storageDao.get(userEva.getLogin()));
+    }
+
+    @Test
+    void register_addUserWithAge18_ok() {
+        User userMisha = new User();
+        userMisha.setAge(18);
+        userMisha.setLogin("mishaMykal");
+        userMisha.setPassword("mishura2222");
+        registrationService.register(userMisha);
+        assertEquals(userMisha, storageDao.get(userMisha.getLogin()));
+    }
+
+    @Test
+    void register_addUserWithNegativeAge_notOk() {
+        User userMisha = new User();
+        userMisha.setAge(-45);
+        userMisha.setLogin("Mykal321");
+        userMisha.setPassword("mis2222");
+        assertThrows(UserValidationException.class, () -> {
+            registrationService.register(userMisha);
+        });
+    }
+
+    @Test
+    void register_addUserWithZeroLengthPassword_notOk() {
+        User userMisha = new User();
+        userMisha.setAge(45);
+        userMisha.setLogin("Myk3424m");
+        userMisha.setPassword("");
+        assertThrows(UserValidationException.class, () -> {
+            registrationService.register(userMisha);
+        });
+    }
+
+    @Test
+    void register_addUserWithShortPassword_notOk() {
+        User userDenys = new User();
+        userDenys.setAge(36);
+        userDenys.setLogin("gremlen");
+        userDenys.setPassword("short");
+        assertThrows(UserValidationException.class, () -> {
+            registrationService.register(userDenys);
+        });
+    }
+
+    @Test
+    void register_addUserWithZeroLengthLogin_notOk() {
+        User userDenys = new User();
+        userDenys.setAge(36);
+        userDenys.setLogin("");
+        userDenys.setPassword("QAZWERsd21");
+        assertThrows(UserValidationException.class, () -> {
+            registrationService.register(userDenys);
+        });
+    }
+
+    @Test
+    void register_addUserWithShortLogin_notOk() {
+        User userDenys = new User();
+        userDenys.setAge(36);
+        userDenys.setLogin("short");
+        userDenys.setPassword("QAZWERsd21");
+        assertThrows(UserValidationException.class, () -> {
+            registrationService.register(userDenys);
+        });
     }
 }
