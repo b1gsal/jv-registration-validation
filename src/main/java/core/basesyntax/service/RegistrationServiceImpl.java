@@ -18,13 +18,17 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (storageDao.get(user.getLogin()) != null) {
             throw new UserValidationException("There is already User with such login");
         }
-        if (user.getLogin() == null
-                || user.getLogin().length() < MINIMAL_LENGTH_FOR_LOGIN_PASSWORD) {
-            throw new UserValidationException("Users login length must be more then 6");
+        if (user.getLogin() == null) {
+            throw new UserValidationException("Users login can not be null");
         }
-        if (user.getPassword() == null
-                || user.getPassword().length() < MINIMAL_LENGTH_FOR_LOGIN_PASSWORD) {
-            throw new UserValidationException("Users password must be more then 6");
+        if (user.getLogin().length() < MINIMAL_LENGTH_FOR_LOGIN_PASSWORD) {
+            throw new UserValidationException("Login length must be at least 6 characters");
+        }
+        if (user.getPassword() == null) {
+            throw new UserValidationException("Users password can not be null");
+        }
+        if (user.getPassword().length() < MINIMAL_LENGTH_FOR_LOGIN_PASSWORD) {
+            throw new UserValidationException("Password length must be at least 6 characters");
         }
         if (user.getAge() == null || user.getAge() < MINIMAL_AGE) {
             throw new UserValidationException("Users who under 18 years old, can not register");
