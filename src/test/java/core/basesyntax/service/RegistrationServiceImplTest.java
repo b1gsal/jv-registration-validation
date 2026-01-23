@@ -130,7 +130,8 @@ class RegistrationServiceImplTest {
         userAlex.setAge(22);
         userAlex.setLogin("Alex161");
         userAlex.setPassword("qazwsx123");
-        registrationService.register(userAlex);
+        User returnedUser = registrationService.register(userAlex);
+        assertEquals(userAlex, returnedUser);
         assertEquals(userAlex, storageDao.get(userAlex.getLogin()));
     }
 
@@ -162,11 +163,14 @@ class RegistrationServiceImplTest {
         userEva.setAge(23);
         userEva.setLogin("_22_2_--");
         userEva.setPassword("!fk((dkasm");
-        registrationService.register(userDenys);
+        User returnedUserDenys = registrationService.register(userDenys);
+        assertEquals(userDenys, returnedUserDenys);
         assertEquals(userDenys, storageDao.get(userDenys.getLogin()));
-        registrationService.register(userVovka);
+        User returnedUserVovka = registrationService.register(userVovka);
+        assertEquals(userVovka, returnedUserVovka);
         assertEquals(userVovka, storageDao.get(userVovka.getLogin()));
-        registrationService.register(userEva);
+        User returnedUserEva = registrationService.register(userEva);
+        assertEquals(userEva, returnedUserEva);
         assertEquals(userEva, storageDao.get(userEva.getLogin()));
     }
 
@@ -176,7 +180,8 @@ class RegistrationServiceImplTest {
         userMisha.setAge(18);
         userMisha.setLogin("mishaMykal");
         userMisha.setPassword("mishura2222");
-        registrationService.register(userMisha);
+        User returnedUser = registrationService.register(userMisha);
+        assertEquals(userMisha, returnedUser);
         assertEquals(userMisha, storageDao.get(userMisha.getLogin()));
     }
 
